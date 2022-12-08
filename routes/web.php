@@ -32,7 +32,7 @@ Route::get('/', function () {
 //    dd($repository->createNewAccountAnSetItUp('Fifth Test')->links->toArray());
 });
 
-Route::get('/{token}', function ($token) {
+Route::get('/token/{token}', function ($token) {
     $account = \App\Models\Account::query()
         ->where('token', $token)
         ->first();
