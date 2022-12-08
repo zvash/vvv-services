@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    //return view('welcome');
+    return view('welcome');
 //    dd((new \App\XUI\Login('http://london.gouril.xyz:10203'))->setUserName('bit')->setPassword('vafanapoli')->call());
 
 //    dd(
@@ -28,8 +28,8 @@ Route::get('/', function () {
 //        (new \App\XUI\Delete('http://london.gouril.xyz:10203', 27))
 //            ->call()
 //    );
-    $repository = new \App\Repositories\AccountRepository();
-    dd($repository->createNewAccountAnSetItUp('Fifth Test')->links->toArray());
+//    $repository = new \App\Repositories\AccountRepository();
+//    dd($repository->createNewAccountAnSetItUp('Fifth Test')->links->toArray());
 });
 
 Route::get('/{token}', function ($token) {
