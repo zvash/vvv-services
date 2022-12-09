@@ -152,7 +152,7 @@ class AccountRepository
     {
         $name = $server->country;
         if ($limit) {
-            $name .= " ($limit/Month)";
+            $name .= " ({$limit}GB/Month)";
         } else {
             $name .= " (Unlimited)";
         }
@@ -169,7 +169,7 @@ class AccountRepository
             'setting_port' => $settingPort,
             'setting_add' => $settingAddress,
             'setting_tls' => $isTLS ? 'tls' : 'none',
-            'settings_path' => $path,
+            'setting_path' => $path,
             'is_proxy' => $justProxy,
         ]);
     }
