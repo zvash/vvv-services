@@ -49,7 +49,7 @@ class Link extends Model
             'port' => $this->setting_port,
             'id' => $this->setting_id,
             'aid' => 0,
-            'net' => 'tcp',
+            'net' => $this->setting_path ? 'ws' : 'tcp',
             'type' => 'none',
             'host' => '',
             'path' => $this->setting_path ?? '',
