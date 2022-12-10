@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,32 +17,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-//    dd((new \App\XUI\Login('http://london.gouril.xyz:10203'))->setUserName('bit')->setPassword('vafanapoli')->call());
-
-//    dd(
-//        (new \App\XUI\Inbound('http://london.gouril.xyz:10203', 'RemoteLimitedSecure'))
-//        ->limit(5)
-//        ->enableTLS()
-//        ->submit()
-//    );
-
-//    dd(
-//        (new \App\XUI\Delete('http://london.gouril.xyz:10203', 27))
-//            ->call()
-//    );
-//    $repository = new \App\Repositories\AccountRepository();
-//    dd($repository->createNewAccountAnSetItUp('Fifth Test')->links->toArray());
+    return Inertia::render('Auth/Login', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-Route::get('/token/{token}', function ($token) {
-    $account = \App\Models\Account::query()
-        ->where('token', $token)
-        ->first();
-    if ($account) {
-        $repository = new \App\Repositories\AccountRepository();
-        echo $repository->getAccountURLs($account);
-        return;
-    }
-    abort(403);
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+require __DIR__.'/auth.php';

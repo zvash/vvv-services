@@ -74,7 +74,7 @@ class AccountRepository
     {
         $candidate = mt_rand(100000, 999999);
         if (
-            Account::query()->where('token', $candidate)->count()
+        Account::query()->where('token', $candidate)->count()
         ) {
             return $this->findToken();
         }
@@ -121,7 +121,7 @@ class AccountRepository
         $name = $account->sent_to . ' (NoTLS - Limited)';
         $inbound = new Inbound($outServer->console_address, $name);
         $response = $inbound->limit(20)->call();
-        if ($response['success']) {
+        if ($response['success'] && $inServer) {
             $this->createLink(
                 $account,
                 $outServer,
@@ -133,20 +133,18 @@ class AccountRepository
                 $inbound->getWSPath(),
                 true
             );
-            if ($inServer) {
-                $this->createLink(
-                    $account,
-                    $inServer,
-                    $inbound->getId(),
-                    $inbound->getPort(),
-                    $inServer->address,
-                    $inbound->isTLS(),
-                    '20',
-                    $inbound->getWSPath()
-                );
-            }
+            $this->createLink(
+                $account,
+                $inServer,
+                $inbound->getId(),
+                $inbound->getPort(),
+                $inServer->address,
+                $inbound->isTLS(),
+                '20',
+                $inbound->getWSPath()
+            );
         }
-   }
+    }
 
     private function createLink(Account $account, Server $server, string $settingId, string $settingPort, string $settingAddress, bool $isTLS, string $limit = '', string $path = '', $justProxy = false)
     {
