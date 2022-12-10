@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AccountController extends Controller
 {
-    public function makeAccount(Request $request, string $token, AccountRepository $repository)
+    public function getUrls(Request $request, string $token, AccountRepository $repository)
     {
         $account = \App\Models\Account::query()
             ->where('token', $token)

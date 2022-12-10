@@ -26,7 +26,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/t/{token}', [\App\Http\Controllers\AccountController::class, 'makeAccount']);
+Route::get('/t/{token}', [\App\Http\Controllers\AccountController::class, 'getUrls']);
 
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
