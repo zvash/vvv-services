@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone',
-        'referer_phone',
+        'referrer_phone',
     ];
 
     /**
@@ -47,5 +47,24 @@ class User extends Authenticatable
     public function account()
     {
         return $this->hasOne(Account::class);
+    }
+
+    /**
+     * Override the field which is used for username in the authentication
+     * @param string $username
+     * @return User
+     */
+    public function findForPassport(string $username)
+    {
+        return $this->where('phone', $username)->first();
+    }
+
+    /**
+     * @param string $username
+     * @return mixed
+     */
+    public static function findByUserName(string $username)
+    {
+        return static::where('phone', $username)->first();
     }
 }

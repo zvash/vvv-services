@@ -12,6 +12,7 @@ class Account extends Model
     protected $fillable = [
         'sent_to',
         'token',
+        'user_id',
     ];
 
     public function links()

@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Account;
 use App\Models\Link;
 use App\Models\Server;
+use App\Models\User;
 use App\XUI\Inbound;
 use Illuminate\Support\Facades\DB;
 
@@ -30,14 +31,14 @@ class AccountRepository
         return implode("\n", $urls);
     }
 
-    public function createNewAccountAnSetItUp(string $sentTo)
+    public function createNewAccountAnSetItUp(string $sentTo, ?User $user = null)
     {
         $outServer = Server::query()->where('is_domestic', false)->first();
         $inServer = Server::query()->where('is_domestic', true)->first();
-        return $this->createNewAccount($sentTo, $outServer, $inServer);
+        return $this->createNewAccount($sentTo, $outServer, $inServer, $user);
     }
 
-    public function createNewAccount(string $sentTo, Server $outServer, Server $inServer = null)
+    public function createNewAccount(string $sentTo, Server $outServer, Server $inServer = null, ?User $user = null)
     {
         DB::beginTransaction();
         try {
@@ -45,6 +46,10 @@ class AccountRepository
                 'sent_to' => $sentTo,
                 'token' => $this->findToken()
             ]);
+            if ($user) {
+                $account->user_id = $user->id;
+                $account->save();
+            }
             $this->createThreeConfigsForAccount($account, $outServer, $inServer);
             DB::commit();
             return $account;
