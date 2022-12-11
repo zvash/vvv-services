@@ -31,7 +31,7 @@ Route::group(['prefix' => 'v1'], function ($router) {
 
             $router->post('/accounts', [AccountController::class, 'createAccountAndLinks']);
             $router->get('/accounts/subscription', [AccountController::class, 'getAccountSubscriptionLink']);
-            
+
         });
 
     });
