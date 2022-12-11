@@ -20,6 +20,7 @@ class UserRepository
      */
     public function register(array $inputs)
     {
+        $inputs['password'] = Hash::make($inputs['password']);
         $record = collect($inputs)->only([
             'name',
             'email',
