@@ -34,6 +34,23 @@ class Server extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function serverTypes()
+    {
+        return $this->belongsToMany(ServerType::class, 'server_server_types', 'server_id', 'server_type_id')
+            ->using(ServerServerType::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function remoteServer()
+    {
+        return $this->belongsTo(Server::class, 'remote_server_id');
+    }
+
+    /**
      * @return string
      */
     public function getConsoleAddressAttribute()

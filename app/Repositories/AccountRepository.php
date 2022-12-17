@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Models\Account;
 use App\Models\Link;
 use App\Models\Server;
+use App\Models\ServerType;
 use App\Models\User;
 use App\XUI\Inbound;
 use Illuminate\Support\Facades\DB;
@@ -33,8 +34,19 @@ class AccountRepository
 
     public function createNewAccountAnSetItUp(string $sentTo, ?User $user = null)
     {
-        $outServer = Server::query()->where('is_domestic', false)->first();
-        $inServer = Server::query()->where('is_domestic', true)->first();
+        $outServer = Server::query()
+            ->where('is_active', true)
+            ->whereHas('serverTypes', function ($serverType) {
+                return $serverType->where('title', 'v2ray');
+            })
+            ->where('is_domestic', false)
+            ->inRandomOrder()
+            ->first();
+        $inServer = Server::query()
+            ->where('is_active', true)
+            ->where('is_domestic', true)
+            ->inRandomOrder()
+            ->first();
         return $this->createNewAccount($sentTo, $outServer, $inServer, $user);
     }
 

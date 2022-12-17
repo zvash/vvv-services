@@ -3,8 +3,11 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -23,7 +26,7 @@ class Server extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'ip';
 
     /**
      * The columns that should be searched.
@@ -32,12 +35,13 @@ class Server extends Resource
      */
     public static $search = [
         'id',
+        'ip',
     ];
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function fields(Request $request)
@@ -47,18 +51,25 @@ class Server extends Resource
             Text::make('Country')->required(),
             Text::make('Host'),
             Text::make('IP', 'ip')->required(),
+            Boolean::make('Is Active', 'is_active')->default(true)->required(),
             Text::make('Panel Port', 'panel_port'),
             Text::make('Panel Username', 'panel_username'),
             Text::make('Panel Password', 'panel_password'),
             Boolean::make('Is Domestic', 'is_domestic'),
             Text::make('Remote Server', 'remote_server'),
+            BelongsTo::make('Remote Server Id', 'remoteServer', Server::class),
+            Text::make('UDP Port', 'udp_port'),
+            File::make('OpenVPN Template', 'open_vpn_template')
+                ->disk('local'),
+
+            BelongsToMany::make('Server Type', 'serverTypes', ServerType::class),
         ];
     }
 
     /**
      * Get the cards available for the request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function cards(Request $request)
@@ -69,7 +80,7 @@ class Server extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function filters(Request $request)
@@ -80,7 +91,7 @@ class Server extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function lenses(Request $request)
@@ -91,7 +102,7 @@ class Server extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return array
      */
     public function actions(Request $request)

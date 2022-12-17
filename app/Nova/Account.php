@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\CreateAccountWithLinks;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -44,6 +45,7 @@ class Account extends Resource
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
+            BelongsTo::make('User', 'user', User::class),
             Text::make('Sent To', 'sent_to')->required(),
             Text::make('Token', 'token')->required(),
         ];

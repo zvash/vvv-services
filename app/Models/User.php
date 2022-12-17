@@ -49,6 +49,11 @@ class User extends Authenticatable
         return $this->hasOne(Account::class);
     }
 
+    public function softEtherAccounts()
+    {
+        return $this->hasMany(SoftEtherAccount::class, 'assigned_to');
+    }
+
     /**
      * Override the field which is used for username in the authentication
      * @param string $username

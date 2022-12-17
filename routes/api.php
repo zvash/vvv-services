@@ -24,6 +24,8 @@ Route::group(['prefix' => 'v1'], function ($router) {
 
     $router->group(['namespace' => 'Api\V1'], function ($router) {
 
+        $router->get('/me', [UserController::class, 'me']);
+
         $router->post('/register', [UserController::class, 'register']);
         $router->post('/login', [UserController::class, 'login']);
 

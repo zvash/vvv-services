@@ -43,6 +43,15 @@ class UserController extends Controller
     }
 
     /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function me(Request $request)
+    {
+        return $this->success($request->user());
+    }
+
+    /**
      * @param LoginRequest $request
      * @return mixed
      */
