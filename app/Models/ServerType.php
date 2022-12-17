@@ -13,8 +13,12 @@ class ServerType extends Model
         'title',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function servers()
     {
-        return $this->hasMany(Server::class);
+        return $this->belongsToMany(Server::class, 'server_server_types', 'server_type_id', 'server_id')
+            ->using(ServerServerType::class);
     }
 }

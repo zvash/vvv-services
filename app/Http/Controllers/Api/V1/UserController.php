@@ -6,6 +6,7 @@ use App\Enums\ErrorCodes;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterUserRequest;
+use App\Models\Referrer;
 use App\Models\User;
 use App\Repositories\UserRepository;
 use App\Traits\Passport\InteractsWithPassport;
@@ -49,6 +50,22 @@ class UserController extends Controller
     public function me(Request $request)
     {
         return $this->success($request->user());
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function invitationCount(Request $request)
+    {
+        $invitationCount = 0;
+        $referrer = Referrer::query()
+            ->where('phone', $request->user()->phone)
+            ->first();
+        if ($referrer) {
+            $invitationCount = $referrer->left_refers;
+        }
+        return $this->success(['invitation_count' => $invitationCount]);
     }
 
     /**

@@ -24,12 +24,14 @@ Route::group(['prefix' => 'v1'], function ($router) {
 
     $router->group(['namespace' => 'Api\V1'], function ($router) {
 
-        $router->get('/me', [UserController::class, 'me']);
-
         $router->post('/register', [UserController::class, 'register']);
         $router->post('/login', [UserController::class, 'login']);
 
         $router->group(['middleware' => 'auth:api'], function ($router) {
+
+            $router->get('/me', [UserController::class, 'me']);
+
+            $router->get('/users/remained-invitations', [UserController::class, 'invitationCount']);
 
             $router->post('/accounts', [AccountController::class, 'createAccountAndLinks']);
             $router->get('/accounts/subscription', [AccountController::class, 'getAccountSubscriptionLink']);

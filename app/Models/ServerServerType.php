@@ -12,12 +12,14 @@ class ServerServerType extends Pivot
 
     protected $table = 'server_server_types';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function servers()
+    public function server()
     {
-        return $this->belongsToMany(Server::class, 'server_server_types', 'server_type_id', 'server_id')
-            ->using(ServerServerType::class);
+        return $this->belongsTo(Server::class);
     }
+
+    public function serverType()
+    {
+        return $this->belongsTo(ServerType::class);
+    }
+
 }
