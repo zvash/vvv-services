@@ -35,7 +35,7 @@ class RegisterUserRequest extends FormRequest
             'phone' => [
                 'required',
                 'unique:users,phone',
-                'regex:/^09[0-9]{9}$/',
+                'regex:/^[0-9]{5,11}$/',
                 'in:' . $referrersPhones,
             ],
             'password' => 'required|confirmed|min:6',
