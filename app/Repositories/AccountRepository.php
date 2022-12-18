@@ -6,6 +6,7 @@ namespace App\Repositories;
 
 use App\Models\Account;
 use App\Models\Link;
+use App\Models\Mapping;
 use App\Models\Server;
 use App\Models\ServerType;
 use App\Models\User;
@@ -150,7 +151,7 @@ class AccountRepository
                 $inbound->getWSPath(),
                 true
             );
-            $this->createLink(
+            $domesticLink = $this->createLink(
                 $account,
                 $inServer,
                 $inbound->getId(),
@@ -160,6 +161,15 @@ class AccountRepository
                 '20',
                 $inbound->getWSPath()
             );
+            if ($domesticLink) {
+                Mapping::query()->create([
+                    'link_id' => $domesticLink->id,
+                    'source_ip' => $inServer->ip,
+                    'source_port' => $inbound->getPort(),
+                    'destination_ip' => $outServer->ip,
+                    'destination_port' => $inbound->getPort(),
+                ]);
+            }
         }
     }
 

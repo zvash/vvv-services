@@ -28,6 +28,7 @@ class Link extends Model
 
     protected $appends = [
         'iptables_commands',
+        'rinetd_commands',
     ];
 
     public function account()
@@ -38,6 +39,11 @@ class Link extends Model
     public function server()
     {
         return $this->belongsTo(Server::class);
+    }
+
+    public function mappings()
+    {
+        return $this->hasMany(Mapping::class);
     }
 
     public function buildURL()
@@ -60,6 +66,18 @@ class Link extends Model
     }
 
     public function getIptablesCommandsAttribute()
+    {
+        $commands = [];
+        $server = $this->server;
+        if ($server->remote_server) {
+            $commands[] = "sudo iptables -t nat -A PREROUTING -p tcp --dport {$this->setting_port} -j DNAT --to-destination {$server->remote_server}:{$this->setting_port}";
+            $commands[] = "sudo iptables -I INPUT -p tcp --dport {$this->setting_port} -j ACCEPT";
+            return implode("\n", $commands);
+        }
+        return null;
+    }
+
+    public function getRinetdCommandsAttribute()
     {
         $commands = [];
         $server = $this->server;
