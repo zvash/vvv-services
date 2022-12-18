@@ -57,7 +57,7 @@ class Server extends Resource
             Text::make('Panel Password', 'panel_password'),
             Boolean::make('Is Domestic', 'is_domestic'),
             Text::make('Remote Server', 'remote_server'),
-            BelongsTo::make('Remote Server Id', 'remoteServer', Server::class),
+            BelongsTo::make('Remote Server Id', 'remoteServer', Server::class)->nullable(),
             Text::make('UDP Port', 'udp_port'),
             File::make('OpenVPN Template', 'open_vpn_template')
                 ->disk('local'),
