@@ -29,7 +29,7 @@ class UserRepository
             'referrer_phone',
         ])->toArray();
         $user = User::query()->create($record);
-        if ($user->referrer_phone) {
+        if ($user->referrer_phone && $user->referrer_phone != $user->phone) {
             $referredBy = Referrer::query()->where('phone', $user->referrer_phone)->first();
             if ($referredBy) {
                 $referredBy->setAttribute('left_refers', $referredBy->left_refers - 1)->save();
