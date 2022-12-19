@@ -54,7 +54,7 @@ class User extends Resource
             Text::make('Phone')
                 ->sortable()
                 ->rules('required', 'max:255'),
-            
+
 
             Text::make('Email')
                 ->sortable()
@@ -67,7 +67,7 @@ class User extends Resource
                 ->creationRules('required', 'string', 'min:8')
                 ->updateRules('nullable', 'string', 'min:8'),
 
-            HasMany::make('Accounts', 'accounts', Account::class),
+            HasMany::make('Accounts', 'account', Account::class),
             HasMany::make('Soft Ether Accounts', 'softEtherAccounts', SoftEtherAccount::class),
         ];
     }
