@@ -47,6 +47,7 @@ class Account extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('User', 'user', User::class),
+            Text::make('Servers', 'servers')->exceptOnForms(),
             Text::make('Sent To', 'sent_to')->required(),
             Text::make('Token', 'token')->required(),
         ];
@@ -102,7 +103,8 @@ class Account extends Resource
 
             (new ResetAccountSubscription())
                 ->confirmText('Are you sure you want to reset selected account(s) subscription?')
-                ->confirmButtonText('Yes'),
+                ->confirmButtonText('Yes')
+                ->shownOnTableRow(),
         ];
     }
 }

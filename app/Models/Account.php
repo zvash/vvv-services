@@ -15,6 +15,10 @@ class Account extends Model
         'user_id',
     ];
 
+    protected $appends = [
+        'servers'
+    ];
+
     public function links()
     {
         return $this->hasMany(Link::class);
@@ -23,5 +27,17 @@ class Account extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getServersAttribute()
+    {
+        $links = $this->links()
+            ->where('still_valid', true)
+            ->get();
+        $servers = [];
+        foreach ($links as $link) {
+            $servers[] = $link->server->country;
+        }
+        return implode(', ', $servers);
     }
 }
