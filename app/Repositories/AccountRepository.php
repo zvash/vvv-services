@@ -18,6 +18,27 @@ class AccountRepository
 
     /**
      * @param Account $account
+     * @return Account
+     * @throws \Exception
+     */
+    public function resetSubscription(Account $account)
+    {
+        DB::beginTransaction();
+        try {
+            $account->links()->update(['still_valid' => false]);
+            $outServer = $this->getRandomOutServer();
+            $inServer = $this->getRandomInServer();
+            $this->createThreeConfigsForAccount($account, $outServer, $inServer);
+            DB::commit();
+            return $account;
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            throw new \Exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @param Account $account
      * @return string
      */
     public function getAccountURLs(Account $account)
@@ -35,19 +56,8 @@ class AccountRepository
 
     public function createNewAccountAnSetItUp(string $sentTo, ?User $user = null)
     {
-        $outServer = Server::query()
-            ->where('is_active', true)
-            ->whereHas('serverTypes', function ($serverType) {
-                return $serverType->where('title', 'v2ray');
-            })
-            ->where('is_domestic', false)
-            ->inRandomOrder()
-            ->first();
-        $inServer = Server::query()
-            ->where('is_active', true)
-            ->where('is_domestic', true)
-            ->inRandomOrder()
-            ->first();
+        $outServer = $this->getRandomOutServer();
+        $inServer = $this->getRandomInServer();
         return $this->createNewAccount($sentTo, $outServer, $inServer, $user);
     }
 
@@ -197,5 +207,34 @@ class AccountRepository
             'setting_path' => $path,
             'is_proxy' => $justProxy,
         ]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|Server|null
+     */
+    private function getRandomOutServer()
+    {
+        $outServer = Server::query()
+            ->where('is_active', true)
+            ->whereHas('serverTypes', function ($serverType) {
+                return $serverType->where('title', 'v2ray');
+            })
+            ->where('is_domestic', false)
+            ->inRandomOrder()
+            ->first();
+        return $outServer;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|Server|null
+     */
+    private function getRandomInServer()
+    {
+        $inServer = Server::query()
+            ->where('is_active', true)
+            ->where('is_domestic', true)
+            ->inRandomOrder()
+            ->first();
+        return $inServer;
     }
 }

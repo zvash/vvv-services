@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\CreateAccountWithLinks;
+use App\Nova\Actions\ResetAccountSubscription;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
@@ -98,6 +99,10 @@ class Account extends Resource
                 ->confirmButtonText('Create')
                 ->onlyOnIndex(true)
                 ->standalone(),
+
+            (new ResetAccountSubscription())
+                ->confirmText('Are you sure you want to reset selected account(s) subscription?')
+                ->confirmButtonText('Yes'),
         ];
     }
 }
