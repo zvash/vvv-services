@@ -104,7 +104,7 @@ class Account extends Resource
             (new ResetAccountSubscription())
                 ->confirmText('Are you sure you want to reset selected account(s) subscription?')
                 ->confirmButtonText('Yes')
-                ->shownOnTableRow(),
+                ->showOnTableRow(),
         ];
     }
 }
