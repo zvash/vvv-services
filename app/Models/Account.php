@@ -38,6 +38,6 @@ class Account extends Model
         foreach ($links as $link) {
             $servers[] = $link->server->country;
         }
-        return implode(', ', $servers);
+        return implode(', ', array_unique($servers));
     }
 }
