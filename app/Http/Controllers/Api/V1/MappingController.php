@@ -13,10 +13,10 @@ class MappingController extends Controller
     public function all(Request $request)
     {
         $ip = $request->ip();
-        
+
         $mappings = Mapping::query()
             ->where('destination_ip', $ip)
             ->get();
-        return $this->success(['ip' => $ip, 'mappings' => $mappings]);
+        return $this->success(['ips' => $request->ips(), 'mappings' => $mappings]);
     }
 }
