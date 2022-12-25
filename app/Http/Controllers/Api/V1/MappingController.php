@@ -17,6 +17,6 @@ class MappingController extends Controller
         $mappings = Mapping::query()
             ->where('destination_ip', $ip)
             ->get();
-        return $this->success(['server' => $_SERVER, 'ip' => $ip, 'mappings' => $mappings]);
+        return $this->success(['headers' => $request->headers->all(), 'ip' => $ip, 'mappings' => $mappings]);
     }
 }
