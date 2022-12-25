@@ -23,7 +23,7 @@ class Link extends Resource
      *
      * @var string
      */
-    public static $title = 'server';
+    public static $title = 'server_name';
 
     /**
      * The columns that should be searched.
@@ -46,7 +46,9 @@ class Link extends Resource
         return [
             ID::make(__('ID'), 'id')->sortable(),
 
-            BelongsTo::make('Server'),
+            Text::make('Server', 'server_name'),
+
+            BelongsTo::make('Server')->onlyOnForms(),
 
             Code::make('IPTables Commands', 'iptables_commands')
                 ->exceptOnForms(),

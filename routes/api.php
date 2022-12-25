@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\MappingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::group(['prefix' => 'v1'], function ($router) {
 
     $router->group(['namespace' => 'Api\V1'], function ($router) {
+
+        $router->get('/mappings', [MappingController::class, 'all']);
 
         $router->post('/register', [UserController::class, 'register']);
         $router->post('/login', [UserController::class, 'login']);

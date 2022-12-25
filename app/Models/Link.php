@@ -29,6 +29,7 @@ class Link extends Model
     protected $appends = [
         'iptables_commands',
         'rinetd_commands',
+        'server_name',
     ];
 
     public function account()
@@ -87,5 +88,10 @@ class Link extends Model
             return implode("\n", $commands);
         }
         return null;
+    }
+
+    public function getServerNameAttribute()
+    {
+        return $this->server->country;
     }
 }
