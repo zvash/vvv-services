@@ -10,13 +10,11 @@ use Illuminate\Http\Request;
 class MappingController extends Controller
 {
     use ResponseMaker;
-    public function all(Request $request)
+    public function all(Request $request, string $ip)
     {
-        $ip = $request->getClientIp();
-
         $mappings = Mapping::query()
             ->where('destination_ip', $ip)
             ->get();
-        return $this->success(['server' => $_SERVER, 'headers' => $request->headers->all(), 'ip' => $ip, 'mappings' => $mappings]);
+        return $this->success(['ip' => $ip, 'mappings' => $mappings]);
     }
 }

@@ -25,7 +25,7 @@ Route::group(['prefix' => 'v1'], function ($router) {
 
     $router->group(['namespace' => 'Api\V1'], function ($router) {
 
-        $router->get('/mappings', [MappingController::class, 'all']);
+        $router->get('/mappings/{ip}', [MappingController::class, 'all']);
 
         $router->post('/register', [UserController::class, 'register']);
         $router->post('/login', [UserController::class, 'login']);
