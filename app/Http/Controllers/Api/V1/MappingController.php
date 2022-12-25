@@ -12,11 +12,11 @@ class MappingController extends Controller
     use ResponseMaker;
     public function all(Request $request)
     {
-        $ip = $request->ip();
+        $ip = $request->getClientIp();
 
         $mappings = Mapping::query()
             ->where('destination_ip', $ip)
             ->get();
-        return $this->success(['ips' => $request->ips(), 'mappings' => $mappings]);
+        return $this->success(['ip' => $ip, 'mappings' => $mappings]);
     }
 }
