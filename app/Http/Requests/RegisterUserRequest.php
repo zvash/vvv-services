@@ -31,7 +31,7 @@ class RegisterUserRequest extends FormRequest
         }
         $referrersPhones = implode(',', $referrersPhones);
         return [
-            'name' => 'required|filled|min:2:max:50|regex:' . $pattern,
+            'name' => 'required|filled|min:2|max:50|regex:' . $pattern,
             'phone' => [
                 'required',
                 'unique:users,phone',
