@@ -61,6 +61,8 @@ class Link extends Model
             'host' => '',
             'path' => $this->setting_path ?? '',
             'tls' => $this->setting_tls,
+            'scy' =>  'auto',
+            'sni' => '',
         ];
 
         return 'vmess://' . base64_encode(json_encode($settings));
