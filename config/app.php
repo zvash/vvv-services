@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Facade;
 
 return [
 
-    'default_server' => env('DEFAULT_SERVER', 'http://london.gouril.xyz:10203'),
+    'default_server' => env('DEFAULT_SERVER', ''),
     'default_username' => env('DEFAULT_USERNAME', ''),
     'default_password' => env('DEFAULT_PASSWORD', ''),
 
