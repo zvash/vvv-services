@@ -17,8 +17,9 @@ class UserSeeder extends Seeder
     {
         \App\Models\User::query()
             ->firstOrCreate([
-                'name' => 'admin',
                 'email' => config('app.admin_email'),
+            ], [
+                'name' => 'admin',
                 'password' => Hash::make('admin'),
             ]);
     }
