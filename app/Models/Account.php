@@ -36,7 +36,12 @@ class Account extends Model
             ->get();
         $servers = [];
         foreach ($links as $link) {
-            $servers[] = $link->server->country;
+            if ($link->server) {
+                $servers[] = $link->server->country;
+            } else {
+                $servers[] = 'Deleted';
+            }
+
         }
         return implode(', ', array_unique($servers));
     }
